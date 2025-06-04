@@ -1,8 +1,4 @@
 *.local
 *.log
 *-test.py
-cfg_*
-launch2.json
-snow.yaml
 config.yaml
-class_snow_api-test.py
