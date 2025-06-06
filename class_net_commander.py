@@ -5,8 +5,15 @@ import yaml
 
 
 class class_net_commander:
+  
+  @property
+  def fqdn(self):
+    return self._fqdn
+
+
   def __init__(self, yaml_fname: str):
 
+    self._fqdn = ""
     self._oauth_url = "https://sso.godaddy.com/v1/api/token" 
     self._netcomm_url = "https://ncm.int.godaddy.com/api/v1.0/netcommander/run/"
     
@@ -60,7 +67,9 @@ class class_net_commander:
     }
 
     response = requests.request("POST", self._netcomm_url, headers=headers, data=json.dumps(payload))
+
+    self._fqdn = response.json()[0]['device'].strip()
     self._api_output = response.json()[0]['result']
-    
+        
     return self._api_output
   
