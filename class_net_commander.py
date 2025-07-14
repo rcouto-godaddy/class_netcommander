@@ -2,6 +2,7 @@
 import requests
 import json
 import yaml
+import sys
 
 
 class class_net_commander:
@@ -66,7 +67,12 @@ class class_net_commander:
         'Authorization': f'sso-jwt {sso_token}' 
     }
 
-    response = requests.request("POST", self._netcomm_url, headers=headers, data=json.dumps(payload))
+    try:
+      response = requests.request("POST", self._netcomm_url, headers=headers, data=json.dumps(payload), timeout=15)
+    except requests.exceptions.RequestException as err:
+      print("An error occurred while attempting connection to the device")
+      print(f"Details: {err}")
+      sys.exit(1)
 
     self._fqdn = response.json()[0]['device'].strip()
     self._api_output = response.json()[0]['result']
